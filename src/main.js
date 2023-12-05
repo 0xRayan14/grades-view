@@ -1,21 +1,21 @@
 const button = document.querySelector("#button");
 const input = document.querySelector(".sem1");
 const semesterButton = document.querySelector("#add-semester");
-let count = 2;
+let count = 0;
 const divGrades = document.querySelector(".grades");
 
 semesterButton.addEventListener("click", (event) => {
     count++;
     const allSemester = document.querySelector("#all-semester");
-    const newSemestre = document
+    const newSemester = document
         .querySelector("#semester-template")
         .content.cloneNode(true);
-    const buttonGrades = newSemestre.querySelector("button");
-    const inputSemester = newSemestre.querySelector("input");
-    let divGrades = newSemestre.querySelector(".grades");
+    const buttonGrades = newSemester.querySelector("button");
+    const inputSemester = newSemester.querySelector("input");
+    let divGrades = newSemester.querySelector(".grades");
 
     if (count <= 8) {
-        allSemester.appendChild(newSemestre);
+        allSemester.appendChild(newSemester);
         const semester = allSemester.lastElementChild;
         semester.querySelector("dt").innerText = "Semester " + count;
 
