@@ -1,84 +1,83 @@
-const button = document.querySelector("#button");
-const input = document.querySelector(".sem1");
-const semesterButton = document.querySelector("#add-semester");
-let count = 0;
-const divGrades = document.querySelector(".grades");
+const addSemesterButton = document.querySelector('#add-semester');
+const allSemestersContainer = document.querySelector('#all-semester');
+const semesterTemplate = document.querySelector('#semester-template');
+const averageCase = semesterTemplate.querySelector('span');
 
-semesterButton.addEventListener("click", (event) => {
-    count++;
-    const allSemester = document.querySelector("#all-semester");
-    const newSemester = document
-        .querySelector("#semester-template")
-        .content.cloneNode(true);
-    const buttonGrades = newSemester.querySelector("button");
-    const inputSemester = newSemester.querySelector("input");
-    let divGrades = newSemester.querySelector(".grades");
+let semesterCount = 0;
+let gradesArray = []; // Array to store grades for each semester
+let averageGrade = 0; // Variable to store the average grade
 
-    if (count <= 8) {
-        allSemester.appendChild(newSemester);
-        const semester = allSemester.lastElementChild;
-        semester.querySelector("dt").innerText = "Semester " + count;
+const getGradeDot = () => ({
+    orange: document.getElementById('orange').content.querySelector('svg'),
+    red: document.getElementById('red').content.querySelector('svg'),
+    green: document.getElementById('green').content.querySelector('svg'),
+});
 
-        buttonGrades.addEventListener("click", () => {
-            const svgOrange = document
-                .getElementById("svg-orange")
-                .content.querySelector("svg");
-            const svgRed = document
-                .getElementById("svg-red")
-                .content.querySelector("svg");
-            const svgGreen = document
-                .getElementById("svg-green")
-                .content.querySelector("svg");
+const createGradeElement = (gradeValue, gradeDot) => {
+    const newGradeElement = document.createElement('span');
+    newGradeElement.className = 'inline-flex items-center gap-x-1.5 rounded-md px-2 py-2 text-sm font-medium text-gray-900 ring-1 ring-inset ring-gray-200';
 
-            if (
-                inputSemester.value <= 6 &&
-                inputSemester.value % 0.5 === 0 &&
-                inputSemester.value > 0.5
-            ) {
-                const newGrades = document.createElement("span");
-                newGrades.className =
-                    "inline-flex items-center gap-x-1.5 rounded-md px-2 py-2 text-sm font-medium text-gray-900 ring-1 ring-inset ring-gray-200";
+    const newSvg = (gradeValue > 4) ? gradeDot.green.cloneNode(true) : (gradeValue < 4) ? gradeDot.red.cloneNode(true) : gradeDot.orange.cloneNode(true);
 
-                let newSvg = document.createElement("svg");
+    newGradeElement.appendChild(newSvg);
+    newGradeElement.appendChild(document.createTextNode(gradeValue));
 
-                if (inputSemester.value > 4) {
-                    newSvg = svgGreen.cloneNode(true);
-                } else if (inputSemester.value < 4) {
-                    newSvg = svgRed.cloneNode(true);
-                } else {
-                    newSvg = svgOrange.cloneNode(true);
-                }
+    gradesArray.push(gradeValue);
 
-                newGrades.appendChild(newSvg);
-                newGrades.appendChild(document.createTextNode(inputSemester.value));
+    return newGradeElement;
+};
 
-                if (divGrades) {
-                    divGrades.appendChild(newGrades);
+const addSemester = () => {
+    semesterCount++;
+
+    if (semesterCount <= 8) {
+        const newSemesterContainer = semesterTemplate.content.cloneNode(true);
+        const gradeDot = getGradeDot();
+
+        allSemestersContainer.appendChild(newSemesterContainer);
+        const currentSemester = allSemestersContainer.lastElementChild;
+
+        currentSemester.querySelector('dt').innerText = `Semester ${semesterCount}`;
+
+        const gradeButton = currentSemester.querySelector('button');
+        const gradeInput = currentSemester.querySelector('input');
+        const gradesContainer = currentSemester.querySelector('.grades');
+
+        gradeButton.addEventListener('click', () => {
+            const inputGrade = parseFloat(gradeInput.value);
+
+            if (inputGrade <= 6 && inputGrade % 0.5 === 0 && inputGrade > 0.5) {
+                const newGradeElement = createGradeElement(inputGrade, gradeDot);
+
+                if (gradesContainer) {
+                    gradesContainer.appendChild(newGradeElement);
                 }
             }
-            inputSemester.value = "";
+
+            gradeInput.value = '';
         });
+
+        if (semesterCount === 8) {
+            addSemesterButton.remove();
+        }
+
+        const handleFocus = () => {
+            gradeButton.classList.remove('ring-gray-300');
+            gradeButton.classList.add('ring-blue-400');
+            gradeButton.querySelector('svg').classList.remove('text-gray-400');
+            gradeButton.querySelector('svg').classList.add('text-blue-400');
+        };
+
+        const handleBlur = () => {
+            gradeButton.classList.add('ring-gray-300');
+            gradeButton.classList.remove('ring-blue-400');
+            gradeButton.querySelector('svg').classList.add('text-gray-400');
+            gradeButton.querySelector('svg').classList.remove('text-blue-400');
+        };
+
+        gradeInput.addEventListener('focus', handleFocus);
+        gradeInput.addEventListener('blur', handleBlur);
     }
-});
+};
 
-input.addEventListener("focus", (event) => {
-    const buttonClassList = button.classList;
-    const svgClassList = button.querySelector("svg");
-
-    buttonClassList.remove("ring-gray-300");
-
-    svgClassList.classList.remove("text-gray-400");
-    svgClassList.classList.add("text-blue-400");
-});
-
-input.addEventListener("blur", (event) => {
-    const buttonClass = button.classList;
-
-    const svgClassList = button.querySelector("svg");
-
-    buttonClass.remove("ring-blue-300");
-    buttonClass.add("ring-gray-300");
-
-    svgClassList.classList.remove("text-blue-400");
-    svgClassList.classList.add("text-gray-400");
-});
+addSemesterButton.addEventListener('click', addSemester);

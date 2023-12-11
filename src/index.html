@@ -208,17 +208,17 @@
   </main>
 </div>
 </body>
-<template id="svg-red">
+<template id="red">
   <svg class="h-1.5 w-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
     <circle cx="3" cy="3" r="3" />
   </svg>
 </template>
-<template id="svg-green">
+<template id="green">
   <svg class="h-1.5 w-1.5 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
     <circle cx="3" cy="3" r="3" />
   </svg>
 </template>
-<template id="svg-orange">
+<template id="orange">
   <svg class="h-1.5 w-1.5 fill-yellow-500" viewBox="0 0 6 6" aria-hidden="true">
     <circle cx="3" cy="3" r="3" />
   </svg>
@@ -234,7 +234,9 @@
         <div>
           <div class="flex rounded-md shadow-sm">
             <div class="relative flex flex-grow items-stretch focus-within:z-10">
-              <input class="block w-14 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" max="6" min="1" placeholder="4" step="0.5" type="number">
+              <label>
+                <input class="block w-14 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" max="6" min="1" placeholder="4" step="0.5" type="number">
+              </label>
             </div>
             <button class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" type="button">
               <svg aria-hidden="true" class="-ml-0.5 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -243,6 +245,10 @@
             </button>
           </div>
         </div>
+        <span
+                class="ml-1 inline-flex items-center gap-x-1.5 rounded-md px-2 py-2 text-sm font-bold text-gray-900 ring-1 ring-inset ring-gray-300">
+
+      </span>
       </div>
     </dd>
   </div>
